@@ -6,14 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tb_contacts")
@@ -25,28 +24,21 @@ public class Contact implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
+	@Column(nullable = false)
 	private String name;
 	
-	@NotBlank
+	@Column(nullable = false)
 	private String email;
 	
-	@NotBlank
+	@Column(nullable = false)
 	private String telefone;
 	
+	@Column(nullable = false)
 	private LocalDate dataNascimento;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "contact", cascade = CascadeType.ALL)
-	private List<Address> endereco = new ArrayList<>();
-	
-	public Contact() {}
-	
-	public Contact(String name, String email, String telefone, LocalDate dataNascimento) {
-		this.name = name;
-		this.email = email;
-		this.telefone = telefone;
-		this.dataNascimento = dataNascimento;
-	}
+	@Column(nullable = false)
+	@OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
+    private List<Address> endereco = new ArrayList<Address>();
 
 	public Long getId() {
 		return id;
@@ -60,20 +52,20 @@ public class Contact implements Serializable{
 		this.name = name;
 	}
 
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-
 	public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
 	public LocalDate getDataNascimento() {
@@ -89,6 +81,7 @@ public class Contact implements Serializable{
 	}
 
 	public void setEndereco(List<Address> endereco) {
+		endereco.forEach(end -> end.setContact(this));
 		this.endereco = endereco;
 	}
 }

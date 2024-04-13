@@ -1,7 +1,9 @@
 package br.com.caique.crud.infra;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.NoSuchElementException;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,8 +14,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class errorHandling {
 	
 	@ExceptionHandler(NoSuchElementException.class)
-	public ResponseEntity<?> dealWith404 () {
-		return ResponseEntity.notFound().build();
+	public ResponseEntity<?> dealWith404 (NoSuchElementException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("O contato não foi encontrado");
+	}
+	
+	@ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+	public ResponseEntity<?> dealWith404 (SQLIntegrityConstraintViolationException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex);
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
