@@ -45,43 +45,35 @@ public class ContactService {
 		log.info("Registros buscados com sucesso !");
 		return contacts;
 	}
-	
-	public ContactResponseDTO update(ContactRequestDTO contactRequestDTO, Long id) {
+
+	public ContactResponseDTO update(ContactResponseDTO contactRequestDTO, Long id) {
 		if (contactRepository.existsById(id)) {
-            log.info("Atualizando o contato");
-            
-            ContactRequestDTO contactUpdate =  modelMapper.map(contactRepository.findById(id), ContactRequestDTO.class);
-           
-            contactUpdate.setDataNascimento(contactRequestDTO.getDataNascimento());
-            contactUpdate.setEmail(contactRequestDTO.getEmail());
-            contactUpdate.setEndereco(contactRequestDTO.getEndereco());
-            contactUpdate.setName(contactRequestDTO.getName());
-            contactUpdate.setTelefone(contactRequestDTO.getTelefone());
-            
-            final var contactConvert = modelMapper.map(contactUpdate, Contact.class);
-            
-            log.info("Atualizado com sucesso");
-            
-            return modelMapper.map(contactRepository.save(contactConvert), ContactResponseDTO.class);
-        } else {
-            log.info("O contato com o id" + id + "não existe na base de dados");
-            throw new NoSuchElementException();
-        }
+			log.info("Atualizando o contato");
+			contactRequestDTO.setId(id);
+			final var contatoEntity = modelMapper.map(contactRequestDTO, Contact.class);
+			final var ctConvertido = contactRepository.save(contatoEntity);
+			return modelMapper.map(ctConvertido, ContactResponseDTO.class);
+		} else {
+			log.info("O contato com o id" + id + "não existe na base de dados");
+			throw new NoSuchElementException();
+		}
 	}
 
-	public List<Contact> delete(Long id) {
+	public ContactResponseDTO delete(Long id) {
 		log.info("Deletando o registro com o id: " + id);
 
 		if (contactRepository.existsById(id)) {
+			ContactResponseDTO contact = modelMapper.map(contactRepository.findById(id), ContactResponseDTO.class);
+
 			contactRepository.deleteById(id);
 
-			log.info("Contato com o id" + id + "foi deletado !");
+			log.info("Contato com o id " + id + " foi deletado !");
+
+			return contact;
 		} else {
-			log.error("O contato com o id" + id + "não existe na base de dados");
+			log.error("O contato com o id " + id + " não existe na base de dados");
 			throw new NoSuchElementException();
 		}
-
-		return read();
 	}
 
 	public ContactResponseDTO findById(Long id) {
