@@ -1,0 +1,13 @@
+br\com\caique\crud\controller\DTO\request\AddressRequestDTO.class
+br\com\caique\crud\entities\Contact.class
+br\com\caique\crud\controller\DTO\response\ContactResponseDTO.class
+br\com\caique\crud\repository\AddressRepository.class
+br\com\caique\crud\controller\controller\ContactController.class
+br\com\caique\crud\controller\DTO\request\ContactRequestDTO.class
+br\com\caique\crud\service\ContactService.class
+br\com\caique\crud\infra\errorHandling.class
+br\com\caique\crud\repository\ContactRepository.class
+br\com\caique\crud\DesafioDimensaCrudApplication.class
+br\com\caique\crud\entities\Address.class
+br\com\caique\crud\controller\DTO\response\AddressResponseDTO.class
+br\com\caique\crud\infra\DTO\response\ErrorHandlingResponseDTO.class
