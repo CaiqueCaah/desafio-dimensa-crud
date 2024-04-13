@@ -5,36 +5,42 @@ import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException.BadRequest;
+
+import br.com.caique.crud.infra.DTO.response.ErrorHandlingResponseDTO;
 
 @RestControllerAdvice
 public class errorHandling {
-	
+
 	@ExceptionHandler(NoSuchElementException.class)
-	public ResponseEntity<?> dealWith404 (NoSuchElementException ex) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("O contato não foi encontrado");
+	public ResponseEntity<?> dealWith404(NoSuchElementException ex) {
+		ErrorHandlingResponseDTO errorBody = fillBodyError(404, "Contact not found !");
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorBody);
 	}
-	
+
 	@ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-	public ResponseEntity<?> dealWith404 (SQLIntegrityConstraintViolationException ex) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex);
+	public ResponseEntity<?> dealWith400(SQLIntegrityConstraintViolationException ex) {
+		ErrorHandlingResponseDTO errorBody = fillBodyError(400, ex.getMessage());
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorBody);
 	}
 	
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<?> dealWith400 (MethodArgumentNotValidException ex) {
-		var erros = ex.getFieldErrors();
-		
-		return ResponseEntity.badRequest().body(
-				erros.stream().map(DataError::new).toList());
+	@ExceptionHandler(BadRequest.class)
+	public ResponseEntity<?> dealWith400(BadRequest ex) {
+		ErrorHandlingResponseDTO errorBody = fillBodyError(400, ex.getMessage());
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorBody);
 	}
-	
-	public record DataError(String field, String message) {
-		
-		public DataError(FieldError erro) {
-			this(erro.getField(), erro.getDefaultMessage());
-		}
+
+	private ErrorHandlingResponseDTO fillBodyError(int statusCode, String message) {
+		ErrorHandlingResponseDTO errorBody = new ErrorHandlingResponseDTO();
+
+		errorBody.setMessage(message);
+		errorBody.setCode(statusCode);
+
+		return errorBody;
 	}
 }
