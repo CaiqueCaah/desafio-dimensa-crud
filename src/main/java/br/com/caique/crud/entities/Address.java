@@ -4,18 +4,13 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_address")
@@ -27,27 +22,18 @@ public class Address implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
+	@Column(nullable = false)
 	private String rua;
 	
+	@Column(nullable = false)
 	private int numero;
 	
-	@NotBlank
+	@Column(nullable = false)
 	private String cep;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "contact_id")
+	@ManyToOne
 	@JsonIgnore
 	private Contact contact;
-	
-	public Address() {}
-	
-	public Address(String rua, int numero, String cep) {
-		super();
-		this.rua = rua;
-		this.numero = numero;
-		this.cep = cep;
-	}
 
 	public Long getId() {
 		return id;
