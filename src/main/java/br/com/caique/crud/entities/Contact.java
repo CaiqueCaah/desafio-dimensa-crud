@@ -16,34 +16,45 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_contacts")
-public class Contact implements Serializable{
-	
+public class Contact implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(nullable = false)
 	private String name;
-	
+
 	@Column(nullable = false)
 	private String email;
-	
+
 	@Column(nullable = false)
 	private String telefone;
-	
+
 	@Column(nullable = false)
 	private LocalDate dataNascimento;
-	
+
 	@Column(nullable = false)
 	@OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
-    private List<Address> endereco = new ArrayList<Address>();
+	private List<Address> endereco = new ArrayList<Address>();
+
+	public Contact() {
+	}
+
+	public Contact(String name, String email, String telefone, LocalDate dataNascimento, List<Address> endereco) {
+		this.name = name;
+		this.email = email;
+		this.telefone = telefone;
+		this.dataNascimento = dataNascimento;
+		this.endereco = endereco;
+	}
 
 	public Long getId() {
 		return id;
 	}
-	
+
 	public void setId(Long id) {
 		this.id = id;
 	}
