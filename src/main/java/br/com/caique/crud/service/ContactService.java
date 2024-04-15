@@ -60,9 +60,8 @@ public class ContactService {
 	}
 
 	public ContactResponseDTO delete(Long id) {
-		log.info("Deletando o registro com o id: " + id);
-
 		if (contactRepository.existsById(id)) {
+			log.info("Deletando o registro com o id: " + id);
 			ContactResponseDTO contact = modelMapper.map(contactRepository.findById(id), ContactResponseDTO.class);
 
 			contactRepository.deleteById(id);
