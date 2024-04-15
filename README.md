@@ -8,10 +8,10 @@
 
 ## ☕ Tecnologias
 
-. Spring Boot
-. Spring Data JPA
-. SpringDoc OpenAPI 3
-. Mysql
+- Spring Boot
+- Spring Data JPA
+- SpringDoc OpenAPI 3
+- Mysql
 
 ## 💻 Pré-requisitos
 
@@ -29,7 +29,7 @@ Utilizar API por Swagger ou enviar as requisições pelo Postman:
 https://desafio-dimensa-crud-production.up.railway.app/swagger-ui/index.html
 ```
 
-API Endpoints
+- API Endpoints
 
 1. Buscar todos contatos.
 ```
@@ -106,7 +106,7 @@ curl -X 'GET' \
 
 ## 📫 Contribuindo para o projeto
 
-Para contribuir com <desafio-dimensa-crud>, siga estas etapas:
+Para contribuir com [desafio-dimensa-crud](https://github.com/CaiqueCaah/desafio-dimensa-crud), siga estas etapas:
 
 1. Bifurque este repositório.
 2. Crie um branch: `git checkout -b <nome_branch>`.
